@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Weather</title>
+    <link rel="stylesheet" href="./style.css">
+</head>
+<body>
+    <div class="container">
+        <div class="search">
+            <input type="text" placeholder="Enter city name">
+            <button><img src="download (1).png" alt="Weather"></button>
+        </div>
+        <div class="wrong">
+          <p>Wrong place</p>
+        </div>
+        <div class="weather">
+            <img src="photo-1621704161179-ff6628e04f2a.avif" width="315" height="315" alt="">
+            <h1 class="celcius">31°c</h1>
+            <h2 class="city">India</h2>
+            <h3 class="tempmin">tempmin:297.56</h3>
+            <h3 class="tempmax">tempmax:300.05</h3>
+            <div class="details">
+                <div class="col">
+                    <img src="Humidity.png" width="115" height="115" alt="">
+                    <div class="humidity">
+                        <p class="humidityP" font-size="27px">40%</p>
+                        <p>Humidity</p>
+                    </div>
+                </div>
+                <div class="col">
+                    <img src="699847.png" width="115" height="115" alt="">
+                    <div class="wind">
+                        <p class="windZ">35k/h</p>
+                        <p>Wind</p>
+                    </div>
+                </div>
+                
+                <div class="col">
+                    <img src="5903579.png" width="115" height="115" alt="">
+                    <div class="temperature">
+                        <p class="temperatureS">31°C °F </p>
+                        <p>Temperature</p>
+                    </div>
+                </div>
+
+                <div class="col">
+                    <img src="2675979.png" width="115" height="115" alt="">
+                    <div class="pressure">
+                        <p class="pressureX">1014.4 mbar</p>
+                        <p>Pressure</p>
+                    </div>
+                </div>
+
+                <div class="col">
+                    <div class="sunrise">
+                        <p>Sunrise</p>
+                        <p class="sunriseD ">6:36 am</p>
+                       
+                    </div>
+                </div>
+
+                <div class="col">
+                    <div class="sunset">
+                        <p>Sunset</p>
+                        <p class="sunsetU ">6:09 pm</p>
+                       
+                    </div>
+                </div>
+            </div>
+        </div>
+       
+    </div>
+
+    <script>
+        const searchInput = document.querySelector('.search input');
+        const searchBtn = document.querySelector('.search button');
+        const image = document.querySelector('.icon')
+       async function  getWeather(city) {
+            var res = await fetch(`https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=34f22c4a7afa83eeb1926e396336238c&&units=metric`)
+            if(res.status == 404){
+                document.querySelector('.wrong').style.display ="block"
+            }
+            var data = await res.json();
+            document.querySelector('.celcius').innerHTML =Math.round(data.main.temp)+ "°c";
+            document.querySelector('.tempmin').innerHTML =Math.round(data.main.temp_min)+ "°c min";
+            document.querySelector('.tempmax').innerHTML =Math.round(data.main.temp_max)+ "°c max";
+            document.querySelector('.city').innerHTML = data.name ;
+            document.querySelector('.humidityP').innerHTML = Math.round(data.main.humidity) + "%";
+            document.querySelector('.windZ').innerHTML = Math.round(data.wind.speed) + "km/h";
+            document.querySelector('.temperatureS').innerHTML = Math.round(data.main.temp) + "°C °F";
+            document.querySelector('.pressureX').innerHTML = Math.round(data.main.pressure) + "mbar";
+            document.querySelector('.sunriseD').innerHTML = Math.round(data.sys.sunrise) + "am";
+            document.querySelector('.sunsetU').innerHTML = Math.round(data.sys.sunset) + "pm";
+
+
+            if(data.getWeather[0].main == "clouds") {
+                image.src ="download (1).jpg"
+            }
+            else if(data.getWeather[0].main == "rainy cloud"){
+                image.src ="download (2).jpg"
+            }
+            else if(data.getWeather[0].main == "mist"){
+                image.src ="realistic-fog-background_23-2149115272.avif"
+            }
+            else if(data.getWeather[0].main == "dust cloud"){
+                image.src ="download (3).jpg"
+            }
+        }
+        
+        searchBtn.addEventListener('click',() => {
+            getWeather(searchInput.value);
+        })
+    </script>
+    
+</body>
+</html>
